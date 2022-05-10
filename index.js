@@ -45,6 +45,24 @@ app.get('/airdrop/totalTxs/:count', (req,res) => {
     });
 })
 
+app.get('/airdrop/totalTxs/:count/Volume/:min/:max', (req,res) => {
+    const count = req.params.count; 
+    const maxVol = req.params.max; 
+    const minVol = req.params.min; 
+    knex.select()
+    .from('addressesMetadataAllUsers')
+    .where('totalTxs', count)
+    .where('totalVolume','>=', minVol)
+    .where('totalVolume','<', maxVol)
+    .orderBy('totalVolume','ASC')
+    .then((result) => {
+        res.send(result);
+    }).catch((err) => {
+        res.send('Error');
+        console.log(err);
+    });
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

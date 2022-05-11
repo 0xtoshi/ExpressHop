@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "abi-decoder": "^2.4.0",
     "axios": "^0.27.2",
     "express": "^4.18.1",
     "knex": "^2.0.0",

@@ -10,7 +10,7 @@ for(let i=0; i<walletList.length; i++)
 {
 
     web3.eth.getTransactionCount(walletList[i].address, (err, result) =>{
-        if(result == 0){
+        if(result <= 5){
             console.log(walletList[i].address);
         }
     })

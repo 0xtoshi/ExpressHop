@@ -13,7 +13,7 @@ web3.eth.getTransaction(txMultiSender, async function(error, result) {
         for(let i=0; i<decode_data.params[1].value.length; i++)
         {
             //console.log(decode_data.params[1].value[i]);
-            const checkEligbility = await axios(`https://airdrop-api.hop.exchange/v1/airdrop/${decode_data.params[1].value[i]}`);
+            const checkEligbility = await axios(`http://localhost:3000/airdrop/address/${decode_data.params[1].value[i]}`);
             
             if(Object.keys(checkEligbility.data.data).length > 0)
             {

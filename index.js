@@ -24,7 +24,17 @@ app.get('/airdrop/address/:address', (req, res) => {
     .join('finalDistribution', 'addressesMetadataAllUsers.address','finalDistribution.address')
     .where('addressesMetadataAllUsers.address', address)
     .then((result) => {
-        res.send(result);
+        if(result.length > 0){
+        res.send({
+            status : "OK",
+            data : result[0]
+        });
+        }else{
+            res.send({
+                status : "OK",
+                data : []
+            });
+        }
     }).catch((err) => {
         res.send('Error');
     });
@@ -38,7 +48,10 @@ app.get('/airdrop/totalTxs/:count', (req,res) => {
     .from('addressesMetadataAllUsers')
     .where('totalTxs', count)
     .then((result) => {
-        res.send(result);
+        res.send({
+            status : "OK",
+            data : result[0]
+        });
     }).catch((err) => {
         res.send('Error');
         console.log(err);

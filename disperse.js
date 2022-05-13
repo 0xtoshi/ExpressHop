@@ -16,24 +16,37 @@ const knex = require('knex')({
     }
   });
 
-const TxJson = fs.readFileSync('./TxDisperse1.json', 'utf8');
+const TxJson = fs.readFileSync('./dispersexdai.json', 'utf8');
 const txData = JSON.parse(TxJson);
 const result = txData.result;
 
 console.log(result.length)
-/*
+
 result.forEach(async data => {
+    try {
     const decode_data = abiDecoder.decodeMethod(data.input);
 
 
         if(decode_data !== undefined && decode_data.params[0].value[0] !== 0){
-
-          console.log(decode_data.params[0].value[0])
+          knex.select()
+          .from('addressesMetadataAllUsers')
+          .join('finalDistribution', 'addressesMetadataAllUsers.address','finalDistribution.address')
+          .where('addressesMetadataAllUsers.address', decode_data.params[0].value[0])
+          .then((result) => {
+              if(result.length > 0){
+             console.log(data.hash);
+              }
+          }).catch((err) => {
+              
+          });
      }else{
 
      }
+    }catch(err){
+      
+    }
+     
 
      
      
 });
-*/

@@ -1,2 +1,2 @@
-DELETE FROM addressesMetadataAllUsers WHERE addressesMetadataAllUsers.address NOT IN (SELECT e.address FROM eligible e);
-DELETE FROM finalDistribution WHERE finalDistribution.address NOT IN (SELECT e.address FROM eligible e);
+DELETE FROM addressesMetadataAllUsers WHERE addressesMetadataAllUsers.address NOT IN (SELECT e.address FROM eligibleAddresses e);
+DELETE FROM finalDistribution WHERE finalDistribution.address NOT IN (SELECT e.address FROM eligibleAddresses e);

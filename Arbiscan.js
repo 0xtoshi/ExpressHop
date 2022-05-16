@@ -15,6 +15,7 @@ var BlackListed = {
         if (tx.input !== '0x') 
                 continue;
         addressList.push(tx.to);
+        addressList.push(tx.from);
     }
 
     addressList.removeByValue(BlackListed.Binance);
@@ -38,7 +39,7 @@ var BlackListed = {
     var FinalList = new Set(ConcatList);
     for(let finaladdress of FinalList){
         const Hop = await axios(`https://airdrop-api.hop.exchange/v1/airdrop/${finaladdress}`);
-        if(Hop.data.data.hopUserTokens > 0)
+        if(Hop.data.data.totalTokens > 0)
         {
             console.log(Hop.data.data.address);
         }

@@ -5,7 +5,7 @@ var array = []
 eligibleAddresses.forEach(async(address) => {
 
     array.push([
-        "0x335c0552eb130f3dfbe6efcb4d2895aed1e9938b", address.slice(0,6)
+        "0x335c", address.slice(0,6)
     ])
 
 

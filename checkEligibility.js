@@ -1,0 +1,48 @@
+const axios = require('axios');
+
+const addressList = [
+'0x8e8e31cfb9298a432e24b7f94acf06bec8f5c887',
+'0xe1ad4a3f64df1c98fea91af310445bd0aea6dec0',
+'0x0a782717fc13e2158e09d129b2b58317cf30fdfc',
+'0x8fb6db87f556a8207870abd3fae7ffbbaaae7b34',
+'0xfeb41f10aa0a08ac4ee0af30e0d0ee0ad225fd5d',
+'0x6d18a54e0fd87fcb84a0510a3ecd8855b7226715',
+'0x3e1a819eb54a0fa507004ab8f8798308a2164960',
+'0x2b43fa143ff38fc0509a5fa5cd2d36ca458e550c',
+'0xc518ebbeafd92b5fa45132bf7b7c277d633b8cd9',
+'0xa2523fb60c86bf4e1a6e467f56b3a8f864389296',
+'0xc9ccd8459cadf67137fa37828811b66f93248ef2',
+'0x45cf15179926a12ec50135cb291a73a14662fb51',
+'0x732a38e6248109693bf63db97965f6cb6b087d2d',
+'0x017b6a73810a6223542044174144d7d4f5575656',
+'0x377361b23bc15310d32b7687aeb2d8e3950150de',
+'0x5e1e0f59774052344cad68939025f2d959bd6e79',
+'0x27dac4f72f2de2c4d8c1d702f25009ac7e189106',
+'0xddf85cb54be5ad31e9e14418233ca80e59eca2ff',
+'0xc4a6ab2e75e52ecf18aae6f27d674a9794d623c3',
+'0x85f810fb757077ac011c39f9b398b6ad41430b32',
+'0xf978302181fb8cf711e5c38bbc9377ec1aa8b4a9',
+'0x2fabd827ed6802056ca189547965b74bb0ce057b',
+'0x23fe60c2e63ddcc13d651946c24baace2bc295e2',
+'0x39af030facc2da718b12c490054c1f75887e862b',
+'0x31e9a9a158d88628beffb2dfb8319615e377edf0',
+'0xc31be59f5522c4e3a89bc3e863f97e6f8253a21c',
+'0x2575b57a1a465bbfde57c5aba61dd27fa6ff6a0d',
+'0xb81179d5abefb4d0e26c4791e1527a2790b59bf9',
+'0x7f0bd42ea4858bd14705b0d235b74be5a94a304b',
+'0xe6e70994f69538e81b8e71cb2f17e4826af19171',
+'0xd46907f4c04be184eb647f9128352410097c4cf6',
+'0x0a4806a9b68e54301c878f5a55d39f8baa8ec3af',
+'0x4320a5021c90e5727dd9dd24bb796ed692f6537f'];
+(async() => {
+
+    for(let address of addressList){
+        const data = await axios(`https://airdrop-api.hop.exchange/v1/airdrop/${address}`);
+        //console.log(data.data.data.hopUserTokens);
+        if(data.data.data.hopUserTokens > 0)
+        {
+            console.log(data.data.data.address);
+        }
+    }
+
+})()

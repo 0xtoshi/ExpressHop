@@ -14,6 +14,7 @@ const knex = require('knex')({
 
 knex.select().from('addressesMetadataAllUsers')
 .where('totalTxs', '<=', 3)
+.where('totalTxs', '>=', 3)
 .where('totalVolume', '>=', 1000)
 .where('totalVolume', '<=', 1100)
 .then((result) =>{

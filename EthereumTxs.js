@@ -20,7 +20,6 @@ const knex = require('knex')({
   //.limit(3)
   .then((result) => {
       for(let address of result){
-        sleep(5);
           web3.eth.getTransactionCount(address.address, function(error, result) {
               if(result > 0)
               {
@@ -41,10 +40,3 @@ const knex = require('knex')({
       })
   }
 
-  const sleep = (milliseconds) => {
-    const date = Date.now();
-    let currentDate = null;
-    do {
-      currentDate = Date.now();
-    } while (currentDate - date < milliseconds);
-};

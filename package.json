@@ -3,6 +3,8 @@
     "abi-decoder": "^2.4.0",
     "axios": "^0.27.2",
     "express": "^4.18.1",
+    "graphql": "^16.5.0",
+    "graphql-request": "^4.2.0",
     "knex": "^2.0.0",
     "knext": "^0.1.0",
     "mysql": "^2.18.1",

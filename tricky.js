@@ -1,4 +1,11 @@
-const axios = require("axios");
+const axios = require('axios');
+const starTimestamp = 1633066189;
+const endTimestamp = Math.floor(new Date() / 1000);
+let divide = 200;
+let timeStampMin = Number(endTimestamp- starTimestamp);
+let split = Math.floor(Number(timeStampMin) / divide);
+var timestampSplit = starTimestamp;
+var i= 1;
 const knex = require('knex')({
     client: 'mysql',
     connection: {
@@ -11,8 +18,13 @@ const knex = require('knex')({
   });
 (async() => {
 
-    await getAndInsert();
-    
+    while(true){
+
+        await getAndInsert(timestampSplit, timestampSplit+split)
+        //console.log(`Process ${i++}`);
+        timestampSplit = timestampSplit+ split;
+        if(i++ == divide) break;
+    }
 
     async function getAndInsert(startTime, endTime)
     {
@@ -22,7 +34,7 @@ const knex = require('knex')({
             data: {
               query: `
               query TransferSentToL2($perPage: Int, $startTime: Int, $endTime: Int, $skip: Int, $transferId: String, $account: String) {
-                transferSents: transferSentToL2S( where: {timestamp_gte: $startTime, timestamp_lte: $endTime}, first: $perPage, orderBy: timestamp, orderDirection: desc) {
+                transferSents: transferSentToL2S( where: {timestamp_gte: $startTime, timestamp_lte: $endTime}, first: $perPage, orderBy: timestamp, orderDirection: asc) {
                   id
                   destinationChainId
                   amount
@@ -38,8 +50,8 @@ const knex = require('knex')({
               }
                 `,
                 variables: {
-                  startTime : 1652769776,
-                  endTime: 1652868789,
+                  startTime : startTime,
+                  endTime: endTime,
                   perPage : 1000
                 }
             }
@@ -49,13 +61,11 @@ const knex = require('knex')({
           {
               
              var datane = {
-                 address_from : from,
+                 address_from : data.from,
                  id : data.id,
-                 transferId : data.transferId,
                  destinationChainId : data.destinationChainId,
                  amount : data.amount,
                  amountOutMin : data.amountOutMin,
-                 bonderFee : data.bonderFee,
                  recipient : data.recipient,
                  deadline : data.deadline,
                  transactionHash : data.transactionHash,
@@ -63,9 +73,10 @@ const knex = require('knex')({
                  token : data.token
              }
               
-              knex('transferSentETH').insert(datane).then(result => {console.log('DONE')})
+              knex('transferSentETH').insert(datane).then(result => {console.log(`Done Insert From ${new Date(startTime *1000)} To ${new Date(endTime *1000)}`)})
           }
           
     }
-
 })()
+
+

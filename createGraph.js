@@ -3,7 +3,7 @@ const ABI = [{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name"
 const abiDecoder = require('abi-decoder');
 const fs = require('fs');
 abiDecoder.addABI(ABI);
-const root_address = "0xa14ef0e1c1b3fe72706dc5f69ce0595e9dba0646";
+const root_address = "0xa11e04460ec463211503a11ddb93a6248b174063";
 const ContractAddress = {
     Dai : "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
     Weth : "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
@@ -98,11 +98,17 @@ var AddressList = [];
     function getUniqueListBy(arr, key) {
         return [...new Map(arr.map(item => [item[key], item])).values()]
     }
+    var arrData = []
+    var value = []
     for(let finaladdress of FinalList){
         const Hop = await axios(`http://localhost:3000/airdrop/address/${finaladdress.address}`);
         if(Hop.data.data.hopUserTokens > 0)
         {
-            console.log(`[${root_address}](https://polygonscan.com/tx/${root_address})|[${Hop.data.data.address}](https://polygonscan.com/address/${Hop.data.data.address})|${finaladdress.amount}|[${finaladdress.hash}](https://polygonscan.com/tx/${finaladdress.hash})`);
+
+            arrData.push([root_address.substring(0, 8), Hop.data.data.address.substring(0, 8)])
+  
         }
     }
+    console.log(arrData);
+    //console.log(value);
 })()

@@ -1,7 +1,7 @@
 const axios = require('axios');
 const starTimestamp = 1633066189;
 const endTimestamp = Math.floor(new Date() / 1000);
-let divide = 200;
+let divide = 365;
 let timeStampMin = Number(endTimestamp- starTimestamp);
 let split = Math.floor(Number(timeStampMin) / divide);
 var timestampSplit = starTimestamp;
@@ -20,7 +20,7 @@ const knex = require('knex')({
 
     while(true){
 
-        await getAndInsert(timestampSplit, timestampSplit+split)
+        await getAndInsert(timestampSplit+1, timestampSplit+split)
         //console.log(`Process ${i++}`);
         timestampSplit = timestampSplit+ split;
         if(i++ == divide) break;
@@ -57,7 +57,7 @@ const knex = require('knex')({
                   }
             }
           })
-          
+          console.log(`Done Insert From ${new Date(startTime *1000)} To ${new Date(endTime *1000)}`)
           for(let data of GraphQL.data.data.transferSents)
           {
               
@@ -75,8 +75,9 @@ const knex = require('knex')({
                 timestamp : data.timestamp,
                 token : data.token
              }
-              
-              knex('transferSentOP').insert(datane).then(result => {console.log(`Done Insert From ${new Date(startTime *1000)} To ${new Date(endTime *1000)}`)})
+              try{
+              knex('transferSentOP').insert(datane).then(result => {})
+              }catch(error){console.log('Error Maybe Duplicated')}
           }
           
     }

@@ -17,7 +17,7 @@ const knex = require('knex')({
 
           if(data.address_from !== data.recipient)
           {
-              fs.appendFileSync('suspectPolygon.txt',`${data.address_from},${data.recipient},${data.destinationChainId}\n`);
+              fs.appendFileSync('suspectPOLY.txt',`${data.address_from},${data.recipient},${data.destinationChainId}\n`);
           }
       }
   })

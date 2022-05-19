@@ -3,14 +3,17 @@ const ABI = [{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name"
 const abiDecoder = require('abi-decoder');
 const fs = require('fs');
 abiDecoder.addABI(ABI);
-const root_address = "0x79cbecca332a422f7914d8dce23f5f859b782897";
+const endBlock = 5156630; //SNAPSHOT BLOCK
+const root_address = "0xfe7c17f3b63817da3eb8c5867c2361f1b4e579f3";
 const ContractAddress = {
-    Dai : "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
-    Weth : "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
-    USDC : "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
-    Wmatic : "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
-    USDT : "0xc2132d05d31c914a87c6611c10748aeb04b58e8f"
+    Dai : "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1",
+    Weth : "0x4200000000000000000000000000000000000006",
+    USDC : "0x7f5c764cbc14f9669b88837ca1490cca17c31607",
+    Wmatic : "0x81ddfac111913d3d5218dea999216323b7cd6356",
+    USDT : "0x94b008aa00579c1307b0ef2c499ad98a8ce58e58"
 }
+console.log(`**AddressFrom**|**Recipient**|**Amount**|**TxHash**
+:-----:|:-----:|:-----:|:-----:`);
 var PolygonTransfer = [];
 var WethTransfer = [];
 var UsdcTransfer = [];
@@ -21,7 +24,7 @@ var AddressList = [];
 
 (async() =>{
 
-    const PolygonScanAPI = await axios(`https://api.polygonscan.com/api?module=account&action=txlist&address=${root_address}&startblock=0&endblock=99999999&page=1&offset=1000&sort=DESC&apikey=F3TTPZBVHEWA7ZS1QWG2RP8YWGHK1ABCWT`);
+    const PolygonScanAPI = await axios(`https://api-optimistic.etherscan.io/api?module=account&action=txlist&address=${root_address}&startblock=0&endblock=${endBlock}&page=1&offset=1000&sort=DESC&apikey=TPXJSIB9DQQN9S15NAHE2ADHU6WGN6GAZK`);
    //console.log(PolygonScanAPI.data.result);
     for(let tx of PolygonScanAPI.data.result){
         if (tx.input == '0x') {
@@ -96,17 +99,12 @@ var AddressList = [];
     function getUniqueListBy(arr, key) {
         return [...new Map(arr.map(item => [item[key], item])).values()]
     }
-    var arrData = []
-    var value = []
     for(let finaladdress of FinalList){
         const Hop = await axios(`http://localhost:3000/airdrop/address/${finaladdress.address}`);
         if(Hop.data.data.hopUserTokens > 0)
         {
-
-            arrData.push([root_address.substring(0, 12), Hop.data.data.address.substring(0, 12)])
-  
+            //console.log(`[${root_address}](https://polygonscan.com/tx/${root_address})|[${Hop.data.data.address}](https://polygonscan.com/address/${Hop.data.data.address})|${finaladdress.amount}|[${finaladdress.hash}](https://polygonscan.com/tx/${finaladdress.hash})`);
+            console.log(finaladdress.address);
         }
     }
-    console.log(arrData);
-    //console.log(value);
 })()

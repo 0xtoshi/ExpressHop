@@ -1,5 +1,5 @@
 CREATE TABLE `transferSentETH` (
-  `id` varchar(255) NOT NULL,
+  `id` varchar(255) NOT NULL UNIQUE,
   `address_from` varchar(255) NOT NULL,
   `transferId` varchar(255) NOT NULL,
   `destinationChainId` varchar(255) NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE `transferSentETH` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `transferSentOP` (
-  `id` varchar(255) NOT NULL,
+  `id` varchar(255) NOT NULL UNIQUE,
   `address_from` varchar(255) NOT NULL,
   `transferId` varchar(255) NOT NULL,
   `destinationChainId` varchar(255) NOT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE `transferSentOP` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `transferSentPOLY` (
-  `id` varchar(255) NOT NULL,
+  `id` varchar(255) NOT NULL UNIQUE,
   `address_from` varchar(255) NOT NULL,
   `transferId` varchar(255) NOT NULL,
   `destinationChainId` varchar(255) NOT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE `transferSentPOLY` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `transferSentARB` (
-  `id` varchar(255) NOT NULL,
+  `id` varchar(255) NOT NULL UNIQUE,
   `address_from` varchar(255) NOT NULL,
   `transferId` varchar(255) NOT NULL,
   `destinationChainId` varchar(255) NOT NULL,
@@ -59,7 +59,7 @@ CREATE TABLE `transferSentARB` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `transferSentXDAI` (
-  `id` varchar(255) NOT NULL,
+  `id` varchar(255) NOT NULL UNIQUE,
   `address_from` varchar(255) NOT NULL,
   `transferId` varchar(255) NOT NULL,
   `destinationChainId` varchar(255) NOT NULL,
@@ -72,3 +72,4 @@ CREATE TABLE `transferSentXDAI` (
   `timestamp` varchar(255) NOT NULL,
   `token` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+

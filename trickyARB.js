@@ -1,7 +1,7 @@
 const axios = require('axios');
 const starTimestamp = 1633066189;
 const endTimestamp = Math.floor(new Date() / 1000);
-let divide = 200;
+let divide = 365;
 let timeStampMin = Number(endTimestamp- starTimestamp);
 let split = Math.floor(Number(timeStampMin) / divide);
 var timestampSplit = starTimestamp;
@@ -20,7 +20,7 @@ const knex = require('knex')({
 
     while(true){
 
-        await getAndInsert(timestampSplit, timestampSplit+split)
+        await getAndInsert(timestampSplit+1, timestampSplit+split)
         //console.log(`Process ${i++}`);
         timestampSplit = timestampSplit+ split;
         if(i++ == divide) break;
@@ -76,8 +76,9 @@ const knex = require('knex')({
                 timestamp : data.timestamp,
                 token : data.token
              }
-              
+              try{
               knex('transferSentARB').insert(datane).then(result => {})
+              }catch(err){console.log('Error Maybe Duplicated!')}
           }
           
     }

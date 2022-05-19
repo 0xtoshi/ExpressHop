@@ -4,7 +4,7 @@ const abiDecoder = require('abi-decoder');
 const fs = require('fs');
 abiDecoder.addABI(ABI);
 const endBlock = 26615721; //SNAPSHOT BLOCK
-const root_address = "0xec561dd73346f761d1c09f46999bc8ea1b1e95a2";
+const root_address = "0x486729a5aec20db535adf62e34163cc178c78416";
 const ContractAddress = {
     Dai : "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
     Weth : "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
@@ -12,7 +12,7 @@ const ContractAddress = {
     Wmatic : "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
     USDT : "0xc2132d05d31c914a87c6611c10748aeb04b58e8f"
 }
-console.log(`**AddressFrom**|**Recipient**|**Amount**|**TxHash**
+console.log(`**Timestamp**|**Recipient**|**Amount**|**TxHash**
 :-----:|:-----:|:-----:|:-----:`);
 var PolygonTransfer = [];
 var WethTransfer = [];
@@ -33,7 +33,7 @@ var AddressList = [];
                 from : root_address,
                 to : tx.to
             });
-            AddressList.push({address: tx.to, hash:tx.hash, amount : Number(tx.value/ 10**18)+' MATIC'})
+            AddressList.push({address: tx.to, hash:tx.hash, amount : Number(tx.value/ 10**18)+' MATIC', timestamp: new Date(tx.timeStamp * 1000).toLocaleString('en-US')})
             //console.log(tx.to);
         }else if(tx.to == ContractAddress.Dai){
             try{
@@ -43,7 +43,7 @@ var AddressList = [];
                         from : root_address,
                         to : data.params[0].value
                     });
-                    AddressList.push({address:data.params[0].value, hash:tx.hash, amount :data.params[1].value / 10**6 +' DAI'})
+                    AddressList.push({address:data.params[0].value, hash:tx.hash, amount :data.params[1].value / 10**6 +' DAI', timestamp: new Date(tx.timeStamp * 1000).toLocaleString('en-US') })
                 }
             }catch(e){}
         }else if(tx.to == ContractAddress.Weth){
@@ -54,7 +54,7 @@ var AddressList = [];
                         from : root_address,
                         to : data.params[0].value
                     });
-                    AddressList.push({address:data.params[0].value, hash:tx.hash, amount :data.params[1].value / 10**6 +' WETH'})
+                    AddressList.push({address:data.params[0].value, hash:tx.hash, amount :data.params[1].value / 10**18 +' WETH', timestamp: new Date(tx.timeStamp * 1000).toLocaleString('en-US')})
                 }
             }catch(e){}
         }else if(tx.to == ContractAddress.USDC){
@@ -65,7 +65,7 @@ var AddressList = [];
                         from : root_address,
                         to : data.params[0].value
                     });
-                    AddressList.push({address:data.params[0].value, hash:tx.hash, amount :data.params[1].value / 10**6 +' USDC'})
+                    AddressList.push({address:data.params[0].value, hash:tx.hash, amount :data.params[1].value / 10**6 +' USDC', timestamp: new Date(tx.timeStamp * 1000).toLocaleString('en-US')})
                 }
             }catch(e){}
         }else if(tx.to == ContractAddress.Wmatic){
@@ -76,7 +76,7 @@ var AddressList = [];
                         from : root_address,
                         to : data.params[0].value
                     });
-                    AddressList.push({address:data.params[0].value, hash:tx.hash, amount :data.params[1].value / 10**6 +' WMATIC'})
+                    AddressList.push({address:data.params[0].value, hash:tx.hash, amount :data.params[1].value / 10**6 +' WMATIC', timestamp: new Date(tx.timeStamp * 1000).toLocaleString('en-US')})
                 }
             }catch(e){}
         }else if(tx.to == ContractAddress.USDT){
@@ -87,7 +87,7 @@ var AddressList = [];
                         from : root_address,
                         to : data.params[0].value
                     });
-                    AddressList.push({address:data.params[0].value, hash:tx.hash, amount :data.params[1].value / 10**6 +' USDT'})
+                    AddressList.push({address:data.params[0].value, hash:tx.hash, amount :data.params[1].value / 10**6 +' USDT', timestamp: new Date(tx.timeStamp * 1000).toLocaleString('en-US')})
                 }
             }catch(e){}
         }
@@ -95,15 +95,12 @@ var AddressList = [];
     }
 
     const AddressFromApi = await Promise.all(AddressList);
-    const FinalList = getUniqueListBy(AddressFromApi, 'address'); // Remove Duplicate
-    function getUniqueListBy(arr, key) {
-        return [...new Map(arr.map(item => [item[key], item])).values()]
-    }
-    for(let finaladdress of FinalList){
+    
+    for(let finaladdress of AddressFromApi){
         const Hop = await axios(`http://localhost:3000/airdrop/address/${finaladdress.address}`);
         if(Hop.data.data.hopUserTokens > 0)
         {
-            //console.log(`[${root_address}](https://polygonscan.com/tx/${root_address})|[${Hop.data.data.address}](https://polygonscan.com/address/${Hop.data.data.address})|${finaladdress.amount}|[${finaladdress.hash}](https://polygonscan.com/tx/${finaladdress.hash})`);
+            //console.log(`${finaladdress.timestamp}|[${Hop.data.data.address}](https://polygonscan.com/address/${Hop.data.data.address})|${finaladdress.amount}|[${finaladdress.hash}](https://polygonscan.com/tx/${finaladdress.hash})`);
             console.log(finaladdress.address);
         }
     }

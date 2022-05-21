@@ -4,7 +4,7 @@ const abiDecoder = require('abi-decoder');
 const fs = require('fs');
 abiDecoder.addABI(ABI);
 const endBlock = 26615721; //SNAPSHOT BLOCK
-const root_address = "0x486729a5aec20db535adf62e34163cc178c78416";
+const root_address = "0xA9D276bfAA139b06dbD4F684Ce685d8fBD1De2F5";
 const ContractAddress = {
     Dai : "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063",
     Weth : "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",

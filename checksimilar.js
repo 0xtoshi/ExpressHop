@@ -10,17 +10,18 @@ const knex = require('knex')({
   });
   const fs = require('fs');
   const eligibleAddresses = fs.readFileSync('./checksimilar.txt').toString().split("\n");
-  console.log(`**Address**|**ENS**|**Total Txs**| **Mainnet** | **Arbitrum** | **Optimism** | **Polygon** | **Gnosis** | **Cumulative Volume**
-  :-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:`);
+  console.log(`Address|Total Txs|Cumulative Volume
+  :-----:|:-----:|:-----:`);
   (async() => {
 
     for(let address of eligibleAddresses)
     {
+        try{
         var dataTx = await checkFromAddress(address);
         var metaData = await getMetaData(address);
         var Ens = await getENS(address);
-  
-        console.log(`${address}|${Ens.ens}|${metaData.totalTxs}|${dataTx.mainnet}|${dataTx.arbitrum}|${dataTx.optimism}|${dataTx.polygon}|${dataTx.xdai}|${(Math.floor(metaData.totalVolume)).toLocaleString('en-US', {style: 'currency',currency: 'USD',})}`)
+        console.log(`${address}|${metaData.totalTxs}|${(Math.floor(metaData.totalVolume)).toLocaleString('en-US', {style: 'currency',currency: 'USD',})}`)
+        }catch(err){}
     }
 
     async function checkFromAddress(address)
@@ -68,6 +69,7 @@ const knex = require('knex')({
         .where('address', address)
 
         return data[0];
+        
     }
 
   })()

@@ -8,19 +8,22 @@ const knex = require('knex')({
       database : 'hop'
     }
   });
+  const fs = require('fs');
 
   (async() => {
 
     const sql = await knex.select()
     .from('HopTx')
     //.where('destinationChainId', 137)
-    .where('sourceChainId', 1)
+    .where('sourceChainId', 137)
+    .orderBy('accountAddress')
     for(let data of sql)
     {
         if( data.accountAddress !== data.recipientAddress)
         {
-            console.log(`${data.accountAddress} => ${data.recipientAddress} (${data.amountUsdDisplay})`);
+            console.log(`${data.accountAddress}(${data.sourceChainId}) => ${data.recipientAddress}(${data.destinationChainId}) (${data.amountUsdDisplay})`);
             //console.log(data.accountAddress);
+            fs.appendFileSync('diffMatic.txt', `${data.accountAddress}(${data.sourceChainId}) => ${data.recipientAddress}(${data.destinationChainId}) (${data.amountUsdDisplay}) \n`);
         }
     }
 

@@ -1,11 +1,8 @@
 const axios = require('axios');
-const starTimestamp = 1623973075;
+const starTimestamp = 1623888000;
 const endTimestamp = Math.floor(new Date() / 1000);
-let divide = 365;
-let timeStampMin = Number(endTimestamp- starTimestamp);
-let split = Math.floor(Number(timeStampMin) / divide);
+let split = 86400;
 var timestampSplit = starTimestamp;
-var i= 1;
 const knex = require('knex')({
     client: 'mysql',
     connection: {
@@ -18,19 +15,24 @@ const knex = require('knex')({
   });
 (async() => {
 
-    for(let i=1; i<140;i++)
-    {
-        await getAndInsert(i);
-        console.log(i);
+    while(true){
+
+        console.log(formatDate(timestampSplit * 1000), formatDate(Number(timestampSplit+split) * 1000) )
+        await getAndInsert(formatDate(timestampSplit * 1000), formatDate(Number(timestampSplit+split) * 1000))
+        //console.log(`Process ${i++}`);
+        //shell.exec('ts-node src/cli.ts --transfers');
+    
+        timestampSplit = timestampSplit+ split;
+        if(timestampSplit >= endTimestamp) break;
     }
 
-    async function getAndInsert(i)
+    async function getAndInsert(start, end)
     {
-        var dataTx = await axios(`https://explorer-api.hop.exchange/v1/transfers?page=${i}&perPage=5000`);
+        var dataTx = await axios(`https://explorer-api.hop.exchange/v1/transfers?perPage=5000&startDate=${start}&endDate=${end}`);
         for(let data of dataTx.data.data)
         {
             try{
-                await knex('hiphop').insert(data);
+                await knex('HopTx').insert(data);
                 }catch(err){console.log('Error Maybe Duplicated!')}
         }
     }
